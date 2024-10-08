@@ -19,7 +19,7 @@ const Portfolio: React.FC = () => {
     : projects.filter(project => project.category === activeCategory);
 
   return (
-    <section id="portfolio" className="py-20 bg-gray-50">
+    <section id="portfolio" className="py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl font-bold text-center mb-8">My Portfolio</h2>
         <div className="flex justify-center space-x-4 mb-8">
