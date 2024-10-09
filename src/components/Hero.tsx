@@ -1,6 +1,12 @@
 import React from 'react';
+import { smoothScroll } from '../utils/smoothScroll';
 
 const Hero: React.FC = () => {
+    const handleButtonClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+        e.preventDefault();
+        smoothScroll(targetId);
+    };
+
     return (
         <section id="home" className="min-h-screen flex items-center justify-center relative pt-16">
             <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col lg:flex-row items-center justify-between relative z-30">
@@ -16,8 +22,8 @@ const Hero: React.FC = () => {
                         leveraging my artistic eye and attention to detail.
                     </p>
                     <div className="space-x-4">
-                        <a href="#about" className="btn btn-blue">About Me</a>
-                        <a href="#contact" className="btn btn-black">Hire Me</a>
+                        <a href="#about" className="btn btn-blue" onClick={(e) => handleButtonClick(e, 'about')}>About Me</a>
+                        <a href="#contact" className="btn btn-black" onClick={(e) => handleButtonClick(e, 'contact')}>Hire Me</a>
                     </div>
                 </div>
                 <div className="w-full lg:w-1/2 flex justify-center lg:justify-end">

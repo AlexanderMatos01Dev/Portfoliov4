@@ -11,12 +11,20 @@ const Navbar: React.FC = () => {
     setIsOpen(false);
   };
 
+  const handleNameClick = (e: React.MouseEvent<HTMLSpanElement>) => {
+    e.preventDefault();
+    smoothScroll('home');
+    setIsOpen(false);
+  };
+
   return (
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white bg-opacity-80 backdrop-blur-md shadow-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex-shrink-0">
-              <span className="font-script text-3xl sm:text-4xl">Alexander Matos</span>
+              <span className="font-script text-3xl sm:text-4xl cursor-pointer" onClick={handleNameClick}>
+                Alexander Matos
+              </span>
             </div>
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">
