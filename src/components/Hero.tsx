@@ -31,16 +31,16 @@ const Hero: React.FC = () => {
 const TechPyramid: React.FC = () => (
     <div className="flex flex-col items-center max-w-xs">
         <div className="flex justify-center mb-4">
-            <TechIcon src="src/Assets/react-2.svg" alt="React" />
+            <TechIcon src="/assets/react-2.svg" alt="React" />
         </div>
         <div className="flex justify-center space-x-4 mb-4">
-            <TechIcon src="src/Assets/javascript.svg" alt="JavaScript" />
-            <TechIcon src="src/Assets/tailwindcss.svg" alt="Tailwind CSS" />
+            <TechIcon src="/assets/javascript.svg" alt="JavaScript" />
+            <TechIcon src="/assets/tailwindcss.svg" alt="Tailwind CSS" />
         </div>
         <div className="flex justify-center space-x-4">
-            <TechIcon src="Assets/html5.svg" alt="HTML5" />
-            <TechIcon src="Assets/css.svg" alt="CSS" />
-            <TechIcon src="Assets/git.svg" alt="Git" />
+            <TechIcon src="/assets/html5.svg" alt="HTML5" />
+            <TechIcon src="/assets/css.svg" alt="CSS" />
+            <TechIcon src="/assets/git.svg" alt="Git" />
         </div>
     </div>
 );
