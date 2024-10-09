@@ -1,4 +1,5 @@
 import React from 'react'
+import { Sparkles } from 'lucide-react'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import About from './components/About'
@@ -6,6 +7,26 @@ import Portfolio from './components/Portfolio'
 import Blog from './components/Blog'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
+
+interface SectionProps {
+    title: string;
+    children: React.ReactNode;
+}
+
+const Section: React.FC<SectionProps> = ({ title, children }) => (
+    <section className="py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="mb-1"> {/* Reduce the margin-bottom value */}
+                <div className="flex items-center space-x-2 mb-2">
+                    <h2 className="text-sky-500 text-3xl font-bold">{title}</h2>
+                    <Sparkles className="w-6 h-6 text-sky-500" />
+                </div>
+                <div className="w-full h-1 bg-gradient-to-r from-sky-500 to-transparent"></div>
+            </div>
+            {children}
+        </div>
+    </section>
+)
 
 function App() {
     return (
@@ -30,10 +51,18 @@ function App() {
                 <div className="relative z-20">
                     <Navbar />
                     <Hero />
-                    <About />
-                    <Portfolio />
-                    <Blog />
-                    <Contact />
+                    <Section title="About">
+                        <About />
+                    </Section>
+                    <Section title="Portfolio">
+                        <Portfolio />
+                    </Section>
+                    <Section title="Blog">
+                        <Blog />
+                    </Section>
+                    <Section title="Contact">
+                        <Contact />
+                    </Section>
                 </div>
             </div>
 

@@ -1,11 +1,10 @@
 import React from 'react';
-import { Code, Palette, GitBranch } from 'lucide-react';
 
 const Hero: React.FC = () => {
     return (
         <section id="home" className="min-h-screen flex items-center justify-center relative">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col md:flex-row items-center relative z-30">
-                <div className="md:w-1/2 mb-8 md:mb-0 text-gray-800">
+                <div className="md:w-1/2 mb-8 md:mb-0 text-gray-800 text-center md:text-left">
                     <p className="text-xl mb-2">Hey There,</p>
                     <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4">
                         I'M <span className="text-primary">ALEXANDER</span>
@@ -21,24 +20,38 @@ const Hero: React.FC = () => {
                         <a href="#contact" className="btn btn-black">Hire Me</a>
                     </div>
                 </div>
-                <div className="md:w-1/2 flex justify-center">
-                    <div className="grid grid-cols-3 gap-4">
-                        <TechIcon Icon={Code} label="HTML/CSS" />
-                        <TechIcon Icon={Palette} label="Tailwind" />
-                        <TechIcon Icon={GitBranch} label="Git" />
-                    </div>
+                <div className="md:w-1/2 flex justify-center md:justify-end">
+                    <TechPyramid />
                 </div>
             </div>
         </section>
     );
 };
 
-const TechIcon: React.FC<{ Icon: React.ElementType; label: string }> = ({ Icon, label }) => (
-    <div className="flex flex-col items-center">
-        <div className="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center mb-2">
-            <Icon className="w-8 h-8 text-primary" />
+const TechPyramid: React.FC = () => (
+    <div className="flex flex-col items-center max-w-xs">
+        <div className="flex justify-center mb-4">
+            <TechIcon src="src/Assets/react-2.svg" alt="React" />
         </div>
-        <span className="text-sm font-medium text-gray-800">{label}</span>
+        <div className="flex justify-center space-x-4 mb-4">
+            <TechIcon src="src/Assets/javascript.svg" alt="JavaScript" />
+            <TechIcon src="src/Assets/tailwindcss.svg" alt="Tailwind CSS" />
+        </div>
+        <div className="flex justify-center space-x-4">
+            <TechIcon src="src/Assets/html5.svg" alt="HTML5" />
+            <TechIcon src="src/Assets/css.svg" alt="CSS" />
+            <TechIcon src="src/Assets/git.svg" alt="Git" />
+        </div>
+    </div>
+);
+
+const TechIcon: React.FC<{ src: string; alt: string }> = ({ src, alt }) => (
+    <div className="flex flex-col items-center">
+        <div className="w-20 h-20 bg-white rounded-full shadow-lg flex items-center justify-center">
+            <div className="w-12 h-12 flex items-center justify-center">
+                <img src={src} alt={alt} className="w-full h-full object-contain" />
+            </div>
+        </div>
     </div>
 );
 

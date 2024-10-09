@@ -11,7 +11,7 @@ const blogPosts = [
 
 const categories = ['All', ...new Set(blogPosts.map(post => post.category))];
 
-const Blog: React.FC = () => {
+export default function Blog() {
   const [activeCategory, setActiveCategory] = useState('All');
 
   const filteredPosts = activeCategory === 'All'
@@ -19,29 +19,33 @@ const Blog: React.FC = () => {
       : blogPosts.filter(post => post.category === activeCategory);
 
   return (
-      <section id="blog" className="py-20">
+      <section id="blog" className="py-12 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center mb-8">Latest Blog Posts</h2>
-          <div className="flex justify-center space-x-4 mb-8">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-8">Latest Blog Posts</h2>
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-4 mb-6 sm:mb-8">
             {categories.map((category, index) => (
                 <button
                     key={index}
-                    className={`px-4 py-2 rounded-full ${activeCategory === category ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700'}`}
+                    className={`px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base rounded-full transition-colors duration-200 ${
+                        activeCategory === category
+                            ? 'bg-primary text-white'
+                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    }`}
                     onClick={() => setActiveCategory(category)}
                 >
                   {category}
                 </button>
             ))}
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {filteredPosts.map((post, index) => (
-                <div key={index} className="bg-gray-50 rounded-lg shadow-md p-6">
-                  <h3 className="text-xl font-semibold mb-2">{post.title}</h3>
-                  <p className="text-sm text-primary mb-2">{post.category}</p>
-                  <p className="text-gray-600 mb-4">{post.excerpt}</p>
+                <div key={index} className="bg-gray-50 rounded-lg shadow-md p-4 sm:p-6 transition-transform duration-200 hover:scale-105">
+                  <h3 className="text-lg sm:text-xl font-semibold mb-2">{post.title}</h3>
+                  <p className="text-xs sm:text-sm text-primary mb-2">{post.category}</p>
+                  <p className="text-sm sm:text-base text-gray-600 mb-4">{post.excerpt}</p>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-500">{post.date}</span>
-                    <a href="#" className="text-primary hover:underline">Read More</a>
+                    <span className="text-xs sm:text-sm text-gray-500">{post.date}</span>
+                    <a href="#" className="text-sm sm:text-base text-primary hover:underline">Read More</a>
                   </div>
                 </div>
             ))}
@@ -49,6 +53,4 @@ const Blog: React.FC = () => {
         </div>
       </section>
   );
-};
-
-export default Blog;
+}
