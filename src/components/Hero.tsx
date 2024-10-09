@@ -38,9 +38,9 @@ const TechPyramid: React.FC = () => (
             <TechIcon src="/assets/tailwindcss.svg" alt="Tailwind CSS" />
         </div>
         <div className="flex justify-center space-x-4">
-            <TechIcon src="/assets/html5.svg" alt="HTML5" />
-            <TechIcon img src="https://drive.google.com/file/d/1K4OiQIyU4MWayASKH_9yZRBB3W5E-UFO/view?usp=sharing" alt="CSS" />
-            <TechIcon src="/assets/git.svg" alt="Git" />
+            <TechIcon src="src/html5.svg" alt="HTML5" />
+            <TechIcon src="src/css.svg" alt="CSS" />
+            <TechIcon src="src/git.svg" alt="Git" />
         </div>
     </div>
 );
