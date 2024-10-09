@@ -45,7 +45,7 @@ function App() {
                 ></div>
 
                 {/* White overlay */}
-                <div className="absolute inset-0 bg-white opacity-90 z-10"></div>
+                <div className="absolute inset-0 bg-white opacity-80 z-10"></div>
 
                 {/* Content */}
                 <div className="relative z-20">
