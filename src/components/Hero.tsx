@@ -29,20 +29,19 @@ const Hero: React.FC = () => {
 };
 
 const TechPyramid: React.FC = () => (
-    <div className="flex flex-col items-center max-w-xs">
+    <div className="flex flex-col items-center max-w-xs transform scale-125">
         <div className="flex justify-center mb-4">
-            <TechIcon src="/assets/react-2.svg" alt="React" />
+            <TechIcon src="https://i.ibb.co/6wVPHPZ/react.png" alt="React" />
         </div>
         <div className="flex justify-center space-x-4 mb-4">
-            <TechIcon src="/assets/javascript.svg" alt="JavaScript" />
-            <TechIcon src="/assets/tailwindcss.svg" alt="Tailwind CSS" />
+            <TechIcon src="https://i.ibb.co/4tSDS9Z/js.png" alt="JavaScript" />
+            <TechIcon src="https://i.ibb.co/d624pvt/tailwind.png" alt="Tailwind CSS" />
         </div>
         <div className="flex justify-center space-x-4">
-            <TechIcon src="https://alexandermatos.dev/Assets/Images/html5.svg" alt="HTML5" />
-            <TechIcon src="https://alexandermatos.dev/Assets/Images/css.svg" alt="CSS" />
-            <TechIcon src="https://alexandermatos.dev/Assets/Images/git.svg" alt="Git" />
+            <TechIcon src="https://i.ibb.co/5FvZbKv/html.png" alt="HTML5" />
+            <TechIcon src="https://i.ibb.co/2KZcPvH/css.png" alt="CSS" />
+            <TechIcon src="https://i.ibb.co/Smtskjq/git.png" alt="Git" />
         </div>
-
     </div>
 );
 
