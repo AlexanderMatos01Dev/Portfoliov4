@@ -39,7 +39,7 @@ const TechPyramid: React.FC = () => (
         </div>
         <div className="flex justify-center space-x-4">
             <TechIcon src="src/html5.svg" alt="HTML5" />
-            <TechIcon src="https://alexandermatos.dev/Assets/Images/css.svg" alt="CSS" />
+            <TechIcon src="https://drive.google.com/file/d/1K4OiQIyU4MWayASKH_9yZRBB3W5E-UFO/view?usp=drive_link" alt="CSS" />
             <TechIcon src="src/git.svg" alt="Git" />
         </div>
 
