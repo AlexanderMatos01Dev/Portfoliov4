@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import { smoothScroll } from '../utils/smoothScroll';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
+    smoothScroll(targetId);
+    setIsOpen(false);
+  };
 
   return (
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white bg-opacity-80 backdrop-blur-md shadow-md">
@@ -18,6 +25,7 @@ const Navbar: React.FC = () => {
                         key={item}
                         href={`#${item.toLowerCase()}`}
                         className="text-gray-800 hover:text-primary px-3 py-2 rounded-md text-lg font-medium transition duration-300"
+                        onClick={(e) => handleNavClick(e, item.toLowerCase())}
                     >
                       {item}
                     </a>
@@ -25,7 +33,13 @@ const Navbar: React.FC = () => {
               </div>
             </div>
             <div className="hidden md:block">
-              <a href="#contact" className="btn btn-black text-lg">Contact</a>
+              <a
+                  href="#contact"
+                  className="btn btn-black text-lg"
+                  onClick={(e) => handleNavClick(e, 'contact')}
+              >
+                Contact
+              </a>
             </div>
             <div className="md:hidden">
               <button
@@ -45,7 +59,7 @@ const Navbar: React.FC = () => {
                         key={item}
                         href={`#${item.toLowerCase()}`}
                         className="text-gray-800 hover:text-primary block px-3 py-2 rounded-md text-lg font-medium"
-                        onClick={() => setIsOpen(false)}
+                        onClick={(e) => handleNavClick(e, item.toLowerCase())}
                     >
                       {item}
                     </a>
@@ -53,7 +67,7 @@ const Navbar: React.FC = () => {
                 <a
                     href="#contact"
                     className="btn btn-black block text-center mt-4 text-lg"
-                    onClick={() => setIsOpen(false)}
+                    onClick={(e) => handleNavClick(e, 'contact')}
                 >
                   Contact
                 </a>
