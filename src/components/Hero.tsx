@@ -43,7 +43,7 @@ const TechPyramid: React.FC = () => (
         </div>
         <div className="flex justify-center space-x-4 sm:space-x-6 mb-4 sm:mb-6">
             <TechIcon src="https://i.ibb.co/4tSDS9Z/js.png" alt="JavaScript" />
-            <TechIcon src="https://i.ibb.co/d624pvt/tailwind.png" alt="Tailwind CSS" isTailwind={true} />
+            <TechIcon src="https://i.ibb.co/9hCNy4v/pngwing-com.png" alt="Tailwind CSS" isTailwind={true} />
         </div>
         <div className="flex justify-center space-x-4 sm:space-x-6">
             <TechIcon src="https://i.ibb.co/5FvZbKv/html.png" alt="HTML5" />
