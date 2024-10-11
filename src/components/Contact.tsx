@@ -1,11 +1,44 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Mail, Phone, MapPin } from 'lucide-react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Contact: React.FC = () => {
+    const [isSending, setIsSending] = useState(false);
+    const [messageCount, setMessageCount] = useState(0);
+    const [lastSentTime, setLastSentTime] = useState<Date | null>(null);
+
+    useEffect(() => {
+        if (messageCount >= 3) {
+            const interval = setInterval(() => {
+                const now = new Date();
+                if (lastSentTime && (now.getTime() - lastSentTime.getTime()) >= 15 * 60 * 1000) {
+                    setMessageCount(0);
+                    setLastSentTime(null);
+                }
+            }, 1000);
+
+            return () => clearInterval(interval);
+        }
+    }, [messageCount, lastSentTime]);
+
     const sendEmail = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        if (messageCount >= 3) {
+            toast.warn("Ya has enviado bastantes, al menos déjame revisar estos primeros jeje", {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            return;
+        }
+
+        setIsSending(true);
 
         const formData = new FormData(e.currentTarget);
         const data = {
@@ -39,6 +72,8 @@ const Contact: React.FC = () => {
                     draggable: true,
                     progress: undefined,
                 });
+                setMessageCount(prevCount => prevCount + 1);
+                setLastSentTime(new Date());
             } else {
                 throw new Error('Failed to send message');
             }
@@ -52,6 +87,8 @@ const Contact: React.FC = () => {
                 draggable: true,
                 progress: undefined,
             });
+        } finally {
+            setIsSending(false);
         }
     };
 
@@ -96,7 +133,13 @@ const Contact: React.FC = () => {
                                     required
                                 ></textarea>
                             </div>
-                            <button type="submit" className="btn btn-blue w-full py-3 text-lg">Send Message</button>
+                            <button
+                                type="submit"
+                                className="w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+                                disabled={isSending}
+                            >
+                                {isSending ? 'Sending...' : 'Send Message'}
+                            </button>
                         </form>
                     </div>
                     <div className="bg-gray-800 bg-opacity-100 backdrop-filter backdrop-blur-lg text-white rounded-lg shadow-lg p-6 sm:p-8">
