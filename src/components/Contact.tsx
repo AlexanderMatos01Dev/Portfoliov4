@@ -7,6 +7,7 @@ const Contact: React.FC = () => {
     const [isSending, setIsSending] = useState(false);
     const [messageCount, setMessageCount] = useState(0);
     const [lastSentTime, setLastSentTime] = useState<Date | null>(null);
+    const [lastMessage, setLastMessage] = useState<string | null>(null);
 
     useEffect(() => {
         if (messageCount >= 3) {
@@ -25,8 +26,24 @@ const Contact: React.FC = () => {
     const sendEmail = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        const formData = new FormData(e.currentTarget);
+        const currentMessage = formData.get('message') as string;
+
         if (messageCount >= 3) {
-            toast.warn("Ya has enviado bastantes, al menos déjame revisar estos primeros jeje", {
+            toast.warn("Ya has enviado bastantes, al menos déjame revisar estos primero jeje", {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            return;
+        }
+
+        if (lastMessage === currentMessage) {
+            toast.warn("No puedes enviar el mismo mensaje dos veces seguidas.", {
                 position: "bottom-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -40,7 +57,6 @@ const Contact: React.FC = () => {
 
         setIsSending(true);
 
-        const formData = new FormData(e.currentTarget);
         const data = {
             service_id: 'PortfolioID',
             template_id: 'template_1b4hx6i',
@@ -48,7 +64,7 @@ const Contact: React.FC = () => {
             template_params: {
                 from_name: formData.get('from_name'),
                 email: formData.get('email'),
-                message: formData.get('message'),
+                message: currentMessage,
             }
         };
 
@@ -74,11 +90,12 @@ const Contact: React.FC = () => {
                 });
                 setMessageCount(prevCount => prevCount + 1);
                 setLastSentTime(new Date());
+                setLastMessage(currentMessage);
             } else {
                 throw new Error('Failed to send message');
             }
         } catch (error) {
-            toast.error('Failed to send message. Please try again later.', {
+            toast.error('Failed to send message. Please try again later in 15 minutes.', {
                 position: "bottom-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -135,7 +152,7 @@ const Contact: React.FC = () => {
                             </div>
                             <button
                                 type="submit"
-                                className="w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+                                className="w-full py-3 px-4 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
                                 disabled={isSending}
                             >
                                 {isSending ? 'Sending...' : 'Send Message'}
