@@ -5,8 +5,14 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Contact: React.FC = () => {
     const [isSending, setIsSending] = useState(false);
-    const [messageCount, setMessageCount] = useState(0);
-    const [lastSentTime, setLastSentTime] = useState<Date | null>(null);
+    const [messageCount, setMessageCount] = useState<number>(() => {
+        const savedCount = localStorage.getItem('messageCount');
+        return savedCount ? parseInt(savedCount, 10) : 0;
+    });
+    const [lastSentTime, setLastSentTime] = useState<Date | null>(() => {
+        const savedTime = localStorage.getItem('lastSentTime');
+        return savedTime ? new Date(savedTime) : null;
+    });
     const [lastMessage, setLastMessage] = useState<string | null>(null);
 
     useEffect(() => {
@@ -16,6 +22,8 @@ const Contact: React.FC = () => {
                 if (lastSentTime && (now.getTime() - lastSentTime.getTime()) >= 15 * 60 * 1000) {
                     setMessageCount(0);
                     setLastSentTime(null);
+                    localStorage.removeItem('messageCount');
+                    localStorage.removeItem('lastSentTime');
                 }
             }, 1000);
 
@@ -88,14 +96,20 @@ const Contact: React.FC = () => {
                     draggable: true,
                     progress: undefined,
                 });
-                setMessageCount(prevCount => prevCount + 1);
-                setLastSentTime(new Date());
+                setMessageCount(prevCount => {
+                    const newCount = prevCount + 1;
+                    localStorage.setItem('messageCount', newCount.toString());
+                    return newCount;
+                });
+                const now = new Date();
+                setLastSentTime(now);
+                localStorage.setItem('lastSentTime', now.toISOString());
                 setLastMessage(currentMessage);
             } else {
                 throw new Error('Failed to send message');
             }
         } catch (error) {
-            toast.error('Failed to send message. Please try again later in 15 minutes.', {
+            toast.error('Failed to send message. Please try again later.', {
                 position: "bottom-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -155,7 +169,14 @@ const Contact: React.FC = () => {
                                 className="w-full py-3 px-4 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
                                 disabled={isSending}
                             >
-                                {isSending ? 'Sending...' : 'Send Message'}
+                                {isSending ? (
+                                    <svg className="animate-spin h-5 w-5 text-white mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                    </svg>
+                                ) : (
+                                    'Send Message'
+                                )}
                             </button>
                         </form>
                     </div>
