@@ -38,7 +38,7 @@ const Contact: React.FC = () => {
         const currentMessage = formData.get('message') as string;
 
         if (messageCount >= 3) {
-            toast.warn("Ya has enviado bastantes, al menos déjame revisar estos primero jeje", {
+            toast.warn("You have sent enough messages, let me review these first hehe", {
                 position: "bottom-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -51,7 +51,7 @@ const Contact: React.FC = () => {
         }
 
         if (lastMessage === currentMessage) {
-            toast.warn("No puedes enviar el mismo mensaje dos veces seguidas.", {
+            toast.warn("You cannot send the same message twice in a row.", {
                 position: "bottom-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -96,13 +96,9 @@ const Contact: React.FC = () => {
                     draggable: true,
                     progress: undefined,
                 });
-                setMessageCount(prevCount => {
-                    const newCount = prevCount + 1;
-                    localStorage.setItem('messageCount', newCount.toString());
-                    return newCount;
-                });
                 const now = new Date();
-                setLastSentTime(now);
+                setMessageCount(prevCount => prevCount + 1);
+                localStorage.setItem('messageCount', (messageCount + 1).toString());
                 localStorage.setItem('lastSentTime', now.toISOString());
                 setLastMessage(currentMessage);
             } else {
@@ -164,19 +160,8 @@ const Contact: React.FC = () => {
                                     required
                                 ></textarea>
                             </div>
-                            <button
-                                type="submit"
-                                className="w-full py-3 px-4 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-                                disabled={isSending}
-                            >
-                                {isSending ? (
-                                    <svg className="animate-spin h-5 w-5 text-white mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-                                    </svg>
-                                ) : (
-                                    'Send Message'
-                                )}
+                            <button type="submit" className="w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                                {isSending ? <span className="loader"></span> : 'Send Message'}
                             </button>
                         </form>
                     </div>

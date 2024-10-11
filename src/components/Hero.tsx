@@ -55,7 +55,10 @@ const TechPyramid: React.FC = () => (
 
 const TechIcon: React.FC<{ src: string; alt: string; isTailwind?: boolean }> = ({ src, alt, isTailwind }) => (
     <div className="flex flex-col items-center">
-        <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-white rounded-full shadow-lg flex items-center justify-center">
+        <div
+            className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-white rounded-full shadow-lg flex items-center justify-center transition-transform duration-200 hover:scale-125"
+            onClick={() => smoothScroll('portfolio')}
+        >
             <div className={`flex items-center justify-center ${isTailwind ? 'w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10' : 'w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12'}`}>
                 <img src={src} alt={alt} className="w-full h-full object-contain" />
             </div>
