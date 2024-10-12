@@ -192,7 +192,7 @@ const Contact: React.FC = () => {
                                 </div>
                                 <div className="flex-grow">
                                     <p className="text-sm text-gray-300">Address</p>
-                                    <p className="font-medium">C.Daniel del Castillo Edif. 2, San Pedro de Macorís 21000</p>
+                                    <p className="font-medium"> San Pedro de Macorís 21000</p>
                                 </div>
                             </div>
                         </div>
