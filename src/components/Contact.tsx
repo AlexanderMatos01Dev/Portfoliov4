@@ -5,31 +5,39 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Contact: React.FC = () => {
     const [isSending, setIsSending] = useState(false);
-    const [messageCount, setMessageCount] = useState<number>(() => {
-        const savedCount = localStorage.getItem('messageCount');
-        return savedCount ? parseInt(savedCount, 10) : 0;
-    });
-    const [lastSentTime, setLastSentTime] = useState<Date | null>(() => {
-        const savedTime = localStorage.getItem('lastSentTime');
-        return savedTime ? new Date(savedTime) : null;
-    });
+    const [messageCount, setMessageCount] = useState<number>(0);
+    const [lastSentTime, setLastSentTime] = useState<Date | null>(null);
     const [lastMessage, setLastMessage] = useState<string | null>(null);
 
     useEffect(() => {
-        if (messageCount >= 3) {
-            const interval = setInterval(() => {
-                const now = new Date();
-                if (lastSentTime && (now.getTime() - lastSentTime.getTime()) >= 15 * 60 * 1000) {
+        const savedCount = localStorage.getItem('messageCount');
+        const savedTime = localStorage.getItem('lastSentTime');
+        if (savedCount) setMessageCount(parseInt(savedCount, 10));
+        if (savedTime) setLastSentTime(new Date(savedTime));
+    }, []);
+
+    useEffect(() => {
+        if (messageCount >= 3 && lastSentTime) {
+            const timeLeft = 15 * 60 * 1000 - (new Date().getTime() - lastSentTime.getTime());
+            if (timeLeft > 0) {
+                const timeout = setTimeout(() => {
                     setMessageCount(0);
                     setLastSentTime(null);
                     localStorage.removeItem('messageCount');
                     localStorage.removeItem('lastSentTime');
-                }
-            }, 1000);
+                }, timeLeft);
 
-            return () => clearInterval(interval);
+                return () => clearTimeout(timeout);
+            } else {
+                setMessageCount(0);
+                setLastSentTime(null);
+                localStorage.removeItem('messageCount');
+                localStorage.removeItem('lastSentTime');
+            }
         }
     }, [messageCount, lastSentTime]);
+
+    let debounceTimeout: NodeJS.Timeout;
 
     const sendEmail = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -63,31 +71,52 @@ const Contact: React.FC = () => {
             return;
         }
 
-        setIsSending(true);
+        if (debounceTimeout) clearTimeout(debounceTimeout);
 
-        const data = {
-            service_id: 'PortfolioID',
-            template_id: 'template_1b4hx6i',
-            user_id: 'cMGBkUmTahTlL3Xtr',
-            template_params: {
-                from_name: formData.get('from_name'),
-                email: formData.get('email'),
-                message: currentMessage,
-            }
-        };
+        debounceTimeout = setTimeout(async () => {
+            setIsSending(true);
 
-        try {
-            const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ouPWtYFvx7Nu8lqnpfVmn'
-                },
-                body: JSON.stringify(data)
-            });
+            const data = {
+                service_id: 'PortfolioID',
+                template_id: 'template_1b4hx6i',
+                user_id: 'cMGBkUmTahTlL3Xtr',
+                template_params: {
+                    from_name: formData.get('from_name'),
+                    email: formData.get('email'),
+                    message: currentMessage,
+                }
+            };
 
-            if (response.ok) {
-                toast.success('Message sent successfully! Looking forward to working with you.', {
+            try {
+                const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ouPWtYFvx7Nu8lqnpfVmn'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    toast.success('Message sent successfully! Looking forward to working with you.', {
+                        position: "bottom-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+                    const now = new Date();
+                    setMessageCount(prevCount => prevCount + 1);
+                    localStorage.setItem('messageCount', (messageCount + 1).toString());
+                    localStorage.setItem('lastSentTime', now.toISOString());
+                    setLastMessage(currentMessage);
+                } else {
+                    throw new Error('Failed to send message');
+                }
+            } catch (error) {
+                toast.error('Failed to send message. Please try again later.', {
                     position: "bottom-right",
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -96,27 +125,10 @@ const Contact: React.FC = () => {
                     draggable: true,
                     progress: undefined,
                 });
-                const now = new Date();
-                setMessageCount(prevCount => prevCount + 1);
-                localStorage.setItem('messageCount', (messageCount + 1).toString());
-                localStorage.setItem('lastSentTime', now.toISOString());
-                setLastMessage(currentMessage);
-            } else {
-                throw new Error('Failed to send message');
+            } finally {
+                setIsSending(false);
             }
-        } catch (error) {
-            toast.error('Failed to send message. Please try again later.', {
-                position: "bottom-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-        } finally {
-            setIsSending(false);
-        }
+        }, 500); // Debounce timeout of 500ms
     };
 
     return (
