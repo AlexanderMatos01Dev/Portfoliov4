@@ -39,6 +39,7 @@ const Contact: React.FC = () => {
 
     let debounceTimeout: NodeJS.Timeout;
 
+
     const sendEmail = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
