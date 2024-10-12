@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { Mail, Phone, MapPin } from 'lucide-react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const MAX_MESSAGES = 3;
 const COOLDOWN_PERIOD = 15 * 60 * 1000; // 15 minutes in milliseconds
 
-function Contact() {
+const Contact = React.memo(() => {
     const [isSending, setIsSending] = useState(false);
 
     const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
@@ -34,22 +34,27 @@ function Contact() {
         }
     }, []);
 
+    const contactForm = useMemo(
+        () => <ContactForm onSubmit={handleSubmit} isSending={isSending} />,
+        [handleSubmit, isSending]
+    );
+
     return (
         <section id="contact" className="py-20 relative">
             <div className="absolute inset-0 bg-gray-100 opacity-50 backdrop-blur-md"></div>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 text-gray-800">Get in Touch</h2>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <ContactForm onSubmit={handleSubmit} isSending={isSending} />
+                    {contactForm}
                     <ContactInfo />
                 </div>
             </div>
             <ToastContainer position="bottom-right" autoClose={5000} hideProgressBar={false} closeOnClick pauseOnHover draggable />
         </section>
     );
-}
+});
 
-function ContactForm({ onSubmit, isSending }: { onSubmit: (e: React.FormEvent<HTMLFormElement>) => void; isSending: boolean }) {
+const ContactForm = React.memo(({ onSubmit, isSending }: { onSubmit: (e: React.FormEvent<HTMLFormElement>) => void; isSending: boolean }) => {
     return (
         <div className="bg-white bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-lg shadow-lg p-6 sm:p-8">
             <form className="space-y-6" onSubmit={onSubmit}>
@@ -66,9 +71,9 @@ function ContactForm({ onSubmit, isSending }: { onSubmit: (e: React.FormEvent<HT
             </form>
         </div>
     );
-}
+});
 
-function InputField({ label, name, type, placeholder }: { label: string; name: string; type: string; placeholder: string }) {
+const InputField = React.memo(({ label, name, type, placeholder }: { label: string; name: string; type: string; placeholder: string }) => {
     return (
         <div>
             <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
@@ -82,9 +87,9 @@ function InputField({ label, name, type, placeholder }: { label: string; name: s
             />
         </div>
     );
-}
+});
 
-function TextAreaField({ label, name, placeholder }: { label: string; name: string; placeholder: string }) {
+const TextAreaField = React.memo(({ label, name, placeholder }: { label: string; name: string; placeholder: string }) => {
     return (
         <div>
             <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
@@ -98,9 +103,9 @@ function TextAreaField({ label, name, placeholder }: { label: string; name: stri
             ></textarea>
         </div>
     );
-}
+});
 
-function ContactInfo() {
+const ContactInfo = React.memo(() => {
     return (
         <div className="bg-gray-800 bg-opacity-100 backdrop-filter backdrop-blur-lg text-white rounded-lg shadow-lg p-6 sm:p-8">
             <h3 className="text-xl sm:text-2xl font-semibold mb-6">Contact Information</h3>
@@ -111,9 +116,9 @@ function ContactInfo() {
             </div>
         </div>
     );
-}
+});
 
-function ContactInfoItem({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
+const ContactInfoItem = React.memo(({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) => {
     return (
         <div className="flex items-start">
             <div className="bg-primary rounded-full p-3 mr-4 flex-shrink-0">
@@ -125,7 +130,7 @@ function ContactInfoItem({ icon, label, value }: { icon: React.ReactNode; label:
             </div>
         </div>
     );
-}
+});
 
 async function validateSubmission(currentMessage: string): Promise<{ canSend: boolean; error?: string }> {
     const lastMessage = localStorage.getItem('lastMessage');
