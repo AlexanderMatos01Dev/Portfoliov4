@@ -1,8 +1,16 @@
 import React from 'react'
-import { Button } from "@/components/ui/button"
-import { FileDown } from "lucide-react"
+import { smoothScroll } from '../utils/smoothScroll'
 
 export default function About() {
+  const handleButtonClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault()
+    if (targetId === 'cv') {
+      window.open("https://drive.google.com/file/d/1g8ZLYLGKl-BgD8T2y0TEKau7woT5vnj9/view?usp=sharing", "_blank")
+    } else {
+      smoothScroll(targetId)
+    }
+  }
+
   return (
       <section id="about" className="py-20 relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -31,11 +39,15 @@ export default function About() {
               <p className="text-lg mb-6">
                 When I'm not coding, you can find me exploring new design trends, contributing to open-source projects, or enjoying the great outdoors. I'm always excited to take on new challenges and collaborate on innovative web solutions.
               </p>
-
-              <Button className="flex items-center gap-2">
-                <FileDown className="w-4 h-4" />
-                Download CV
-              </Button>
+              <div className="space-x-4">
+                <a
+                    href="#cv"
+                    className="btn btn-blue inline-block px-6 py-3 rounded-full text-white bg-primary hover:bg-primary-dark transition duration-300 ease-in-out transform hover:scale-105"
+                    onClick={(e) => handleButtonClick(e, 'cv')}
+                >
+                  Download CV
+                </a>
+              </div>
             </div>
           </div>
         </div>
