@@ -31,6 +31,7 @@ export default function About() {
               <p className="text-lg mb-6">
                 When I'm not coding, you can find me exploring new design trends, contributing to open-source projects, or enjoying the great outdoors. I'm always excited to take on new challenges and collaborate on innovative web solutions.
               </p>
+
               <Button className="flex items-center gap-2">
                 <FileDown className="w-4 h-4" />
                 Download CV
